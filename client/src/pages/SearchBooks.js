@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { SAVE_BOOK } from '../utils/mutations.js';
+import { useMutation } from "@apollo/react-hooks";
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
@@ -16,6 +18,9 @@ const SearchBooks = () => {
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
+
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
   });
@@ -43,6 +48,7 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.volumeInfo.infoLink,
       }));
 
       setSearchedBooks(bookData);
